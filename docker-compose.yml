@@ -1,0 +1,104 @@
+version: '3.3'
+services:
+  elasticsearch:
+    image: elasticsearch:6.8.4
+    container_name: elasticsearch
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    networks:
+      - piggynet
+    ports:
+      - 9200:9200
+      - 9300:9300
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+  fluentd:
+    image: fluentd/fluentd:latest
+    container_name: fluentd
+    volumes:
+      - ./fluentd/conf:/fluentd/etc
+    networks:
+      - piggynet
+    links:
+      - "elasticsearch"
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+    depends_on:
+      - elasticsearch
+    environment:
+      - TZ=Asia/Shanghai
+  kibana:
+    image: kibana:6.8.4
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - TZ=Asia/Shanghai
+      - discovery.type=single-node
+    networks:
+      - piggynet
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch      
+  oap:
+    image: apache/skywalking-oap-server:6.5.0
+    container_name: oap
+    depends_on:
+      - elasticsearch
+    restart: always
+    networks:
+      - piggynet
+    ports:
+      - 11800:11800
+      - 12800:12800
+    environment:
+      - TZ=Asia/Shanghai
+      - SW_STORAGE=elasticsearch
+      - SW_STORAGE_ES_CLUSTER_NODES=elasticsearch:9200
+  ui:
+    image: registry.cn-hangzhou.aliyuncs.com/shenmiu/skywalking-rocketbot-ui
+    container_name: ui
+    depends_on:
+      - oap
+    restart: always
+    networks:
+      - piggynet
+    ports:
+      - 8080:80
+    environment:
+      - TZ=Asia/Shanghai
+      - SKYWALKING_URL=oap:12800
+  hello-world:
+    image: hello-world
+    container_name: hello-world
+    depends_on:
+      - oap
+    restart: always
+    networks:
+      - piggynet
+    ports:
+      - 8081:8081
+    environment:
+      - SW_SVC_NAME=hello-world
+      - SW_URL=oap:11800
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-buffer-limit: 4m
+        fluentd-address: fluentd:24224
+        fluentd-async-connect: "true"
+        tag: hello-world
+volumes:
+  esdata:
+    driver: local
+networks:
+  piggynet:
+    driver: bridge
