@@ -11,9 +11,12 @@ services:
     networks:
       - piggynet
     logging:
+      driver: "fluentd"
       options:
-        max-size: "10m"
-        max-file: "10"
+        fluentd-buffer-limit: 4m
+        fluentd-address: localhost:24224
+        fluentd-async-connect: "true"
+        tag: rabbitmq
 
   config:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/piggymetrics-config
@@ -28,11 +31,12 @@ services:
     ports:
       - 8888:8888
     logging:
+      driver: "fluentd"
       options:
-        max-size: "10m"
-        max-file: "10"
-        mode: non-blocking
-        max-buffer-size: 4m
+        fluentd-buffer-limit: 4m
+        fluentd-address: localhost:24224
+        fluentd-async-connect: "true"
+        tag: config
 
   registry:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/piggymetrics-registry
@@ -50,11 +54,12 @@ services:
     ports:
       - 8761:8761
     logging:
+      driver: "fluentd"
       options:
-        max-size: "10m"
-        max-file: "10"
-        mode: non-blocking
-        max-buffer-size: 4m
+        fluentd-buffer-limit: 4m
+        fluentd-address: localhost:24224
+        fluentd-async-connect: "true"
+        tag: registry
 
   gateway:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/piggymetrics-gateway
@@ -72,11 +77,12 @@ services:
     ports:
       - 80:4000
     logging:
+      driver: "fluentd"
       options:
-        max-size: "10m"
-        max-file: "10"
-        mode: non-blocking
-        max-buffer-size: 4m
+        fluentd-buffer-limit: 4m
+        fluentd-address: localhost:24224
+        fluentd-async-connect: "true"
+        tag: gateway
 
   auth-service:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/piggymetrics-auth-service
@@ -98,11 +104,12 @@ services:
     ports:
       - 5000:5000
     logging:
+      driver: "fluentd"
       options:
-        max-size: "10m"
-        max-file: "10"
-        mode: non-blocking
-        max-buffer-size: 4m
+        fluentd-buffer-limit: 4m
+        fluentd-address: localhost:24224
+        fluentd-async-connect: "true"
+        tag: auth-service
 
   auth-mongodb:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/piggymetrics-mongodb
@@ -116,11 +123,12 @@ services:
     ports:
       - 25000:27017
     logging:
+      driver: "fluentd"
       options:
-        max-size: "10m"
-        max-file: "10"
-        mode: non-blocking
-        max-buffer-size: 4m
+        fluentd-buffer-limit: 4m
+        fluentd-address: localhost:24224
+        fluentd-async-connect: "true"
+        tag: auth-mongodb
 
   account-service:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/piggymetrics-account-service
@@ -140,11 +148,12 @@ services:
     ports:
       - 6000:6000
     logging:
+      driver: "fluentd"
       options:
-        max-size: "10m"
-        max-file: "10"
-        mode: non-blocking
-        max-buffer-size: 4m
+        fluentd-buffer-limit: 4m
+        fluentd-address: localhost:24224
+        fluentd-async-connect: "true"
+        tag: account-service
 
   account-mongodb:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/piggymetrics-mongodb
@@ -159,11 +168,12 @@ services:
     ports:
       - 26000:27017
     logging:
+      driver: "fluentd"
       options:
-        max-size: "10m"
-        max-file: "10"
-        mode: non-blocking
-        max-buffer-size: 4m
+        fluentd-buffer-limit: 4m
+        fluentd-address: localhost:24224
+        fluentd-async-connect: "true"
+        tag: account-mongodb
 
   statistics-service:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/piggymetrics-statistics-service
@@ -183,11 +193,12 @@ services:
     ports:
       - 7000:7000
     logging:
+      driver: "fluentd"
       options:
-        max-size: "10m"
-        max-file: "10"
-        mode: non-blocking
-        max-buffer-size: 4m
+        fluentd-buffer-limit: 4m
+        fluentd-address: localhost:24224
+        fluentd-async-connect: "true"
+        tag: statistics-service
 
   statistics-mongodb:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/piggymetrics-mongodb
@@ -201,11 +212,12 @@ services:
     ports:
       - 27000:27017
     logging:
+      driver: "fluentd"
       options:
-        max-size: "10m"
-        max-file: "10"
-        mode: non-blocking
-        max-buffer-size: 4m
+        fluentd-buffer-limit: 4m
+        fluentd-address: localhost:24224
+        fluentd-async-connect: "true"
+        tag: statistics-mongodb
 
   notification-service:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/piggymetrics-notification-service
@@ -225,11 +237,12 @@ services:
     ports:
       - 8000:8000
     logging:
+      driver: "fluentd"
       options:
-        max-size: "10m"
-        max-file: "10"
-        mode: non-blocking
-        max-buffer-size: 4m
+        fluentd-buffer-limit: 4m
+        fluentd-address: localhost:24224
+        fluentd-async-connect: "true"
+        tag: notification-service
 
   notification-mongodb:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/piggymetrics-mongodb
@@ -243,11 +256,12 @@ services:
     ports:
       - 28000:27017
     logging:
+      driver: "fluentd"
       options:
-        max-size: "10m"
-        max-file: "10"
-        mode: non-blocking
-        max-buffer-size: 4m
+        fluentd-buffer-limit: 4m
+        fluentd-address: localhost:24224
+        fluentd-async-connect: "true"
+        tag: notification-mongodb
 
   # efk configurations
   elasticsearch:

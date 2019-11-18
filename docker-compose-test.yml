@@ -79,8 +79,6 @@ services:
   hello-world:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/piggy-hello-world
     container_name: hello-world
-    depends_on:
-      - oap
     restart: always
     networks:
       - piggynet
@@ -93,7 +91,7 @@ services:
       driver: "fluentd"
       options:
         fluentd-buffer-limit: 4m
-        fluentd-address: fluentd:24224
+        fluentd-address: localhost:24224
         fluentd-async-connect: "true"
         tag: hello-world
 volumes:
