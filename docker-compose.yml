@@ -1,4 +1,4 @@
-version: '2.4'
+version: '3.3'
 services:
   # piggymetrics
   rabbitmq:
@@ -42,9 +42,6 @@ services:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/piggymetrics-registry
     container_name: registry
     restart: always
-    depends_on:
-      config:
-        condition: service_healthy
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
       SW_SVC_NAME: registry
@@ -65,9 +62,6 @@ services:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/piggymetrics-gateway
     container_name: gateway
     restart: always
-    depends_on:
-      config:
-        condition: service_healthy
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
       SW_SVC_NAME: gateway
@@ -88,9 +82,6 @@ services:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/piggymetrics-auth-service
     container_name: auth-service
     restart: always
-    depends_on:
-      config:
-        condition: service_healthy
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
       NOTIFICATION_SERVICE_PASSWORD: $NOTIFICATION_SERVICE_PASSWORD
@@ -134,9 +125,6 @@ services:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/piggymetrics-account-service
     container_name: account-service
     restart: always
-    depends_on:
-      config:
-        condition: service_healthy
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
       ACCOUNT_SERVICE_PASSWORD: $ACCOUNT_SERVICE_PASSWORD
@@ -179,9 +167,6 @@ services:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/piggymetrics-statistics-service
     container_name: statistics-service
     restart: always
-    depends_on:
-      config:
-        condition: service_healthy
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
       MONGODB_PASSWORD: $MONGODB_PASSWORD
@@ -223,9 +208,6 @@ services:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/piggymetrics-notification-service
     container_name: notification-service
     restart: always
-    depends_on:
-      config:
-        condition: service_healthy
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
       MONGODB_PASSWORD: $MONGODB_PASSWORD
