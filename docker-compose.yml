@@ -106,13 +106,6 @@ services:
       - piggynet
     ports:
       - 25000:27017
-    logging:
-      driver: "fluentd"
-      options:
-        fluentd-buffer-limit: 4m
-        fluentd-address: localhost:24224
-        fluentd-async-connect: "true"
-        tag: auth-mongodb
 
   account-service:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/piggymetrics-account-service
@@ -148,13 +141,6 @@ services:
       - piggynet
     ports:
       - 26000:27017
-    logging:
-      driver: "fluentd"
-      options:
-        fluentd-buffer-limit: 4m
-        fluentd-address: localhost:24224
-        fluentd-async-connect: "true"
-        tag: account-mongodb
 
   statistics-service:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/piggymetrics-statistics-service
@@ -189,13 +175,6 @@ services:
       - piggynet
     ports:
       - 27000:27017
-    logging:
-      driver: "fluentd"
-      options:
-        fluentd-buffer-limit: 4m
-        fluentd-address: localhost:24224
-        fluentd-async-connect: "true"
-        tag: statistics-mongodb
 
   notification-service:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/piggymetrics-notification-service
@@ -230,13 +209,6 @@ services:
       - piggynet
     ports:
       - 28000:27017
-    logging:
-      driver: "fluentd"
-      options:
-        fluentd-buffer-limit: 4m
-        fluentd-address: localhost:24224
-        fluentd-async-connect: "true"
-        tag: notification-mongodb
 
   # efk configurations
   elasticsearch:
@@ -262,6 +234,7 @@ services:
   fluentd:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/fluentd
     container_name: fluentd
+    restart: always
     volumes:
       - ./fluentd/conf:/fluentd/etc
     networks:
@@ -279,6 +252,7 @@ services:
   kibana:
     image: kibana:6.8.4
     container_name: kibana
+    restart: always
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
       - TZ=Asia/Shanghai
@@ -310,8 +284,6 @@ services:
   ui:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/skywalking-rocketbot-ui
     container_name: ui
-    depends_on:
-      - oap
     restart: always
     networks:
       - piggynet

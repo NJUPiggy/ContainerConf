@@ -22,12 +22,11 @@ services:
   fluentd:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/fluentd
     container_name: fluentd
+    restart: always
     volumes:
       - ./fluentd/conf:/fluentd/etc
     networks:
       - piggynet
-    links:
-      - "elasticsearch"
     ports:
       - "24224:24224"
       - "24224:24224/udp"
@@ -38,6 +37,7 @@ services:
   kibana:
     image: kibana:6.8.4
     container_name: kibana
+    restart: always
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
       - TZ=Asia/Shanghai
@@ -47,7 +47,7 @@ services:
     ports:
       - "5601:5601"
     depends_on:
-      - elasticsearch      
+      - elasticsearch
   oap:
     image: apache/skywalking-oap-server:6.5.0
     container_name: oap
@@ -66,8 +66,6 @@ services:
   ui:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/skywalking-rocketbot-ui
     container_name: ui
-    depends_on:
-      - oap
     restart: always
     networks:
       - piggynet
@@ -76,6 +74,7 @@ services:
     environment:
       - TZ=Asia/Shanghai
       - SKYWALKING_URL=oap:12800
+
   hello-world:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/piggy-hello-world
     container_name: hello-world
@@ -90,7 +89,6 @@ services:
     logging:
       driver: "fluentd"
       options:
-        fluentd-buffer-limit: 4m
         fluentd-address: localhost:24224
         fluentd-async-connect: "true"
         tag: hello-world
