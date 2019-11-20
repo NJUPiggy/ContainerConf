@@ -16,11 +16,11 @@ scrape_configs:
     scrape_interval: 5s
 
     consul_sd_configs:
-      server: registry:8761
+      - server: registry:8761
     # dynamically rewrite the label set of a target before it gets scraped. 
     relabel_configs:
       - source_labels: ['__address__']
-        separator:     ':'
-        regex:         '(.*):(8300)'
-        target_label:  '__address__'
-        replacement:   '${1}:9091'
+        separator: ':'
+        regex: '(.*):(8300)'
+        target_label: '__address__'
+        replacement: '${1}:9091'
