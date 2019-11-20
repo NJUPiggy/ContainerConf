@@ -86,12 +86,24 @@ services:
     environment:
       - SW_SVC_NAME=hello-world
       - SW_URL=oap:11800
-    logging:
-      driver: "fluentd"
-      options:
-        fluentd-address: localhost:24224
-        fluentd-async-connect: "true"
-        tag: hello-world
+    # logging:
+    #   driver: "fluentd"
+    #   options:
+    #     fluentd-address: localhost:24224
+    #     fluentd-async-connect: "true"
+    #     tag: hello-world
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    restart: always
+    volumes:
+      - ./prometheus:/etc/prometheus
+    networks:
+      - piggynet
+    ports:
+      - 9090:9090
+    command: ["--config.file=/etc/prometheus/prometheus-static.yml"]
 volumes:
   esdata:
     driver: local

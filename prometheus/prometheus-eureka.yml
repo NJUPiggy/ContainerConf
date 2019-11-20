@@ -1,0 +1,26 @@
+global:
+  scrape_interval:     15s # By default, scrape targets every 15 seconds.
+
+  # Attach these labels to any time series or alerts when communicating with
+  # external systems (federation, remote storage, Alertmanager).
+  external_labels:
+    monitor: 'codelab-monitor'
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  - job_name: 'piggymetrics'
+
+    metrics_path: /actuator/prometheus
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 5s
+
+    consul_sd_config:
+      server: registry:8761
+    # dynamically rewrite the label set of a target before it gets scraped. 
+    relabel_configs:
+      - source_labels: ['__address__']
+        separator:     ':'
+        regex:         '(.*):(8300)'
+        target_label:  '__address__'
+        replacement:   '${1}:9091'

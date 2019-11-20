@@ -292,6 +292,18 @@ services:
     environment:
       - TZ=Asia/Shanghai
       - SKYWALKING_URL=oap:12800
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    restart: always
+    volumes:
+      - ./prometheus:/etc/prometheus
+    networks:
+      - piggynet
+    ports:
+      - 9090:9090
+    command: ["--config.file=/etc/prometheus/prometheus-eureka.yml"]
 volumes:
   esdata:
     driver: local
