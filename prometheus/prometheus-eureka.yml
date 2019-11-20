@@ -15,7 +15,7 @@ scrape_configs:
     # Override the global default and scrape targets from this job every 5 seconds.
     scrape_interval: 5s
 
-    consul_sd_config:
+    consul_sd_configs:
       server: registry:8761
     # dynamically rewrite the label set of a target before it gets scraped. 
     relabel_configs:
