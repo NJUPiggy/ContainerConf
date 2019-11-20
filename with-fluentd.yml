@@ -1,0 +1,84 @@
+# extends docker-compose.yml
+version: '3.3'
+services:
+  config:
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-buffer-limit: 4m
+        fluentd-address: localhost:24224
+        fluentd-async-connect: "true"
+        tag: config
+
+  registry:
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-buffer-limit: 4m
+        fluentd-address: localhost:24224
+        fluentd-async-connect: "true"
+        tag: registry
+
+  gateway:
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-buffer-limit: 4m
+        fluentd-address: localhost:24224
+        fluentd-async-connect: "true"
+        tag: gateway
+
+  auth-service:
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-buffer-limit: 4m
+        fluentd-address: localhost:24224
+        fluentd-async-connect: "true"
+        tag: auth-service
+
+  account-service:
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-buffer-limit: 4m
+        fluentd-address: localhost:24224
+        fluentd-async-connect: "true"
+        tag: account-service
+
+  statistics-service:
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-buffer-limit: 4m
+        fluentd-address: localhost:24224
+        fluentd-async-connect: "true"
+        tag: statistics-service
+
+  notification-service:
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-buffer-limit: 4m
+        fluentd-address: localhost:24224
+        fluentd-async-connect: "true"
+        tag: notification-service
+
+  # fluentd      
+  fluentd:
+    image: registry.cn-hangzhou.aliyuncs.com/shenmiu/fluentd
+    container_name: fluentd
+    restart: always
+    volumes:
+      - ./fluentd/conf:/fluentd/etc
+    networks:
+      - piggynet
+    links:
+      - "elasticsearch"
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+    depends_on:
+      - elasticsearch
+    environment:
+      - TZ=Asia/Shanghai

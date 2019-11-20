@@ -19,21 +19,6 @@ services:
       memlock:
         soft: -1
         hard: -1
-  fluentd:
-    image: registry.cn-hangzhou.aliyuncs.com/shenmiu/fluentd
-    container_name: fluentd
-    restart: always
-    volumes:
-      - ./fluentd/conf:/fluentd/etc
-    networks:
-      - piggynet
-    ports:
-      - "24224:24224"
-      - "24224:24224/udp"
-    depends_on:
-      - elasticsearch
-    environment:
-      - TZ=Asia/Shanghai
   kibana:
     image: kibana:6.8.4
     container_name: kibana
@@ -86,12 +71,6 @@ services:
     environment:
       - SW_SVC_NAME=hello-world
       - SW_URL=oap:11800
-    # logging:
-    #   driver: "fluentd"
-    #   options:
-    #     fluentd-address: localhost:24224
-    #     fluentd-async-connect: "true"
-    #     tag: hello-world
 
   prometheus:
     image: prom/prometheus

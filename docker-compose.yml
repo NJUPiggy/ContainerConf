@@ -23,13 +23,6 @@ services:
       - piggynet
     ports:
       - 8888:8888
-    logging:
-      driver: "fluentd"
-      options:
-        fluentd-buffer-limit: 4m
-        fluentd-address: localhost:24224
-        fluentd-async-connect: "true"
-        tag: config
 
   registry:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/piggymetrics-registry
@@ -43,13 +36,6 @@ services:
       - piggynet
     ports:
       - 8761:8761
-    logging:
-      driver: "fluentd"
-      options:
-        fluentd-buffer-limit: 4m
-        fluentd-address: localhost:24224
-        fluentd-async-connect: "true"
-        tag: registry
 
   gateway:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/piggymetrics-gateway
@@ -63,13 +49,7 @@ services:
       - piggynet
     ports:
       - 80:4000
-    logging:
-      driver: "fluentd"
-      options:
-        fluentd-buffer-limit: 4m
-        fluentd-address: localhost:24224
-        fluentd-async-connect: "true"
-        tag: gateway
+    
 
   auth-service:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/piggymetrics-auth-service
@@ -87,13 +67,6 @@ services:
       - piggynet
     ports:
       - 5000:5000
-    logging:
-      driver: "fluentd"
-      options:
-        fluentd-buffer-limit: 4m
-        fluentd-address: localhost:24224
-        fluentd-async-connect: "true"
-        tag: auth-service
 
   auth-mongodb:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/piggymetrics-mongodb
@@ -121,13 +94,6 @@ services:
       - piggynet
     ports:
       - 6000:6000
-    logging:
-      driver: "fluentd"
-      options:
-        fluentd-buffer-limit: 4m
-        fluentd-address: localhost:24224
-        fluentd-async-connect: "true"
-        tag: account-service
 
   account-mongodb:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/piggymetrics-mongodb
@@ -156,13 +122,6 @@ services:
       - piggynet
     ports:
       - 7000:7000
-    logging:
-      driver: "fluentd"
-      options:
-        fluentd-buffer-limit: 4m
-        fluentd-address: localhost:24224
-        fluentd-async-connect: "true"
-        tag: statistics-service
 
   statistics-mongodb:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/piggymetrics-mongodb
@@ -190,14 +149,7 @@ services:
       - piggynet
     ports:
       - 8000:8000
-    logging:
-      driver: "fluentd"
-      options:
-        fluentd-buffer-limit: 4m
-        fluentd-address: localhost:24224
-        fluentd-async-connect: "true"
-        tag: notification-service
-
+    
   notification-mongodb:
     image: registry.cn-hangzhou.aliyuncs.com/shenmiu/piggymetrics-mongodb
     container_name: notification-mongodb
@@ -230,24 +182,6 @@ services:
       memlock:
         soft: -1
         hard: -1
-
-  fluentd:
-    image: registry.cn-hangzhou.aliyuncs.com/shenmiu/fluentd
-    container_name: fluentd
-    restart: always
-    volumes:
-      - ./fluentd/conf:/fluentd/etc
-    networks:
-      - piggynet
-    links:
-      - "elasticsearch"
-    ports:
-      - "24224:24224"
-      - "24224:24224/udp"
-    depends_on:
-      - elasticsearch
-    environment:
-      - TZ=Asia/Shanghai
 
   kibana:
     image: kibana:6.8.4
@@ -304,6 +238,7 @@ services:
     ports:
       - 9090:9090
     command: ["--config.file=/etc/prometheus/prometheus-eureka.yml"]
+    
 volumes:
   esdata:
     driver: local
