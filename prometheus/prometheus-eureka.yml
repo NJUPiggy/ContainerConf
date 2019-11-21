@@ -21,6 +21,6 @@ scrape_configs:
     relabel_configs:
       - source_labels: ['__address__']
         separator: ':'
-        regex: '(.*):(8300)'
+        regex: '(.*):(\d*)'
         target_label: '__address__'
         replacement: '${1}:9091'
