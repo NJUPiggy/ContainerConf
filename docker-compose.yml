@@ -237,8 +237,10 @@ services:
       - piggynet
     ports:
       - 9090:9090
+    environment:
+      - TZ=Asia/Shanghai
     command: ["--config.file=/etc/prometheus/prometheus-eureka.yml"]
-    
+
 volumes:
   esdata:
     driver: local
