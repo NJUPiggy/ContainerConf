@@ -18,3 +18,8 @@ scrape_configs:
 
     static_configs:
       - targets: ['hello-world:9091']
+
+# remote endpoints and storage
+remote_write:
+  # prometheus es adapter
+  - url: http://prometheusbeat:8080/prometheus

@@ -240,6 +240,14 @@ services:
     environment:
       - TZ=Asia/Shanghai
     command: ["--config.file=/etc/prometheus/prometheus-eureka.yml"]
+  prometheusbeat:
+    image: infonova/prometheusbeat
+    container_name: prometheusbeat
+    restart: always
+    volumes:
+      - ./prombeat/prometheusbeat.yml:/prometheusbeat.yml
+    networks:
+      - piggynet
 
 volumes:
   esdata:
